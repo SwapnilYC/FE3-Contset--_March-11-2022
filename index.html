@@ -1,0 +1,111 @@
+<!-- F3 1st Contest March -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F-3 March Contest-1</title>
+</head>
+
+<body>
+    <h3>Note:- Check the console for outputs</h3>
+
+    <!-- Following is the js code -->
+    <script>
+        function OpeningCeremony(callbackFnc) {
+            console.log("Let the games begin");
+
+            const sportsObj = { red: 0, blue: 0, green: 0, yellow: 0 };
+
+            setTimeout(() => {
+                console.log("Starting Race 100M...");
+                Race100M(sportsObj, callbackFnc);
+            }, 1000);
+        }
+
+        function Race100M(sportsObj, callbackFnc) {
+            const times = {};
+
+            for (let color in sportsObj) {
+                const time = Math.floor(Math.random() * 6) + 10; // generate a random time between 10-15 seconds
+                times[color] = time;
+            }
+
+            const winners = Object.keys(times).sort((a, b) => times[a] - times[b]);
+
+            sportsObj[winners[0]] += 50;
+            sportsObj[winners[1]] += 25;
+
+            console.log(`Race 100M completed! ${winners[0]} won and gets 50 points, ${winners[1]} gets 25 points.`);
+            console.log(`Previous scores:`, sportsObj);
+
+            setTimeout(() => {
+                console.log("Starting Long Jump...");
+                LongJump(sportsObj, callbackFnc);
+            }, 3000);
+        }
+
+        function LongJump(sportsObj, callbackFnc) {
+            const color = ["red", "yellow", "green", "blue"][Math.floor(Math.random() * 4)];
+            sportsObj[color] += 150;
+
+            console.log(`Long Jump completed! ${color} won and gets 150 points.`);
+            console.log(`Previous scores:`, sportsObj);
+
+            setTimeout(() => {
+                console.log("Starting High Jump...");
+                HighJump(sportsObj, callbackFnc);
+            }, 2000);
+        }
+
+        function HighJump(sportsObj, callbackFnc) {
+            const answer = prompt("What colour secured the highest jump?");
+
+            if (answer) {
+                const color = answer.toLowerCase();
+
+                if (color === "red" || color === "yellow" || color === "green" || color === "blue") {
+                    sportsObj[color] += 100;
+
+                    console.log(`${color} secured the highest jump and gets 100 points!`);
+                    console.log(`Previous scores:`, sportsObj);
+                } else {
+                    console.log("Event was cancelled.");
+                }
+            } else {
+                console.log("Event was cancelled.");
+            }
+
+            console.log("Starting Award Ceremony...");
+            AwardCeremony(sportsObj);
+        }
+
+        function AwardCeremony(sportsObj) {
+            const sortedScores = Object.entries(sportsObj).sort((a, b) => b[1] - a[1]);
+
+            console.log(`Yellow came first with ${sortedScores[0][1]} points.`);
+            console.log(`Red came second with ${sortedScores[1][1]} points.`);
+            console.log(`Blue came third with ${sortedScores[2][1]} points.`);
+        }
+
+        OpeningCeremony((sportsObj) => {
+            console.log(`Scores after Race 100M:`, sportsObj);
+
+            LongJump(sportsObj, (sportsObj) => {
+                console.log(`Scores after Long Jump:`, sportsObj);
+
+                HighJump(sportsObj, (sportsObj) => {
+                    console.log(`Scores after High Jump:`, sportsObj);
+
+                    AwardCeremony(sportsObj);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
